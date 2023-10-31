@@ -17,6 +17,24 @@ const getUserById = (id:any) => {
   return null;
 };
 
+const getUserByIdSafe = (id: number) => {
+  try {
+    return userModel.findById(id);
+  } catch (e) {
+    return null;
+  }
+}
+
+const createGithubUser = (id: number, displayName: string, primaryEmail: string) => {
+  const newUser = {
+    id,
+    name: displayName,
+    email: primaryEmail,
+    password: '',
+  };
+  return userModel.createGithubUser(id, displayName, primaryEmail);
+}
+
 function isUserValid(user: any, password: string) {
   return user.password === password;
 }
@@ -24,4 +42,6 @@ function isUserValid(user: any, password: string) {
 export {
   getUserByEmailIdAndPassword,
   getUserById,
+  createGithubUser,
+  getUserByIdSafe
 };

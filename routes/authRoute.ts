@@ -14,6 +14,13 @@ router.get("/login", forwardAuthenticated, (req, res) => {
   const message = req.session.message || '';
   res.render("login", { message });
 })
+router.get("/github", passport.authenticate("github", { scope: ["user:email"] }));
+router.get("/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  (req, res) => {
+    res.redirect("/dashboard");
+  }
+);
 
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {

@@ -20,6 +20,17 @@ const database = [
 ];
 
 const userModel = {
+  createGithubUser: (id: number, name: string, email: string = '', password: string = '') => {
+    const newUser = {
+      id: id,
+      name,
+      email,
+      password,
+    };
+    database.push(newUser);
+    return newUser;
+  },
+
   findOne: (email: string) => {
     const user = database.find((user) => user.email === email);
     if (user) {
