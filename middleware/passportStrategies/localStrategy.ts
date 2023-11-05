@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
+import {addSession, getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
 import { PassportStrategy } from '../../interfaces/index';
 
 const localStrategy = new LocalStrategy(
@@ -17,19 +17,8 @@ const localStrategy = new LocalStrategy(
         });
   }
 );
-type DoneFunctionSerialize = (err: any, id?: any) => void;
-type DoneFunctionDeserialize = (err: any, user?: any) => void;
-
-declare global {
-  namespace Express {
-    interface User {
-      id: number;
-      email: string;
-      password: string;
-    }
-  }
-}
-
+type DoneFunctionSerialize = (err: any, id?: number) => void;
+type DoneFunctionDeserialize = (err: any, user?: Express.User) => void;
 
 passport.serializeUser(function (user: Express.User, done: DoneFunctionSerialize): void {
   done(null, user.id);
@@ -37,11 +26,12 @@ passport.serializeUser(function (user: Express.User, done: DoneFunctionSerialize
 
 
 passport.deserializeUser(function (id: number, done: DoneFunctionDeserialize) {
+  console.log('deserializing user');
   let user = getUserById(id);
   if (user) {
     done(null, user);
   } else {
-    done({ message: "User not found" }, null);
+    done({ message: "User not found" }, undefined);
   }
 });
 

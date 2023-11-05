@@ -1,0 +1,17 @@
+<h1 class="mt-4">Dashboard</h1>
+<p class="lead mb-3">Welcome Admin User <%= user.name %></p>
+<% if (user.role === "admin") { %>
+    <h2>Live Sessions</h2>
+    <ul>
+        <% sessions.forEach(session => { %>
+            <li>
+                <form action="/admin/revoke/<%= session.activeSession %>" method="POST">
+                    <p>Session Id: <%= session.activeSession%></p>
+                    <p>User Id: <%= session.id%></p>
+                    <button type="submit" class="btn btn-danger">Revoke Session</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+<% } %>
+<a href="/auth/logout" class="btn btn-secondary">Logout</a>

@@ -9,7 +9,7 @@ require('dotenv').config();
 const port = process.env.port || 8000;
 
 const app = express();
-
+const sessionStore = new session.MemoryStore();
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
@@ -22,11 +22,14 @@ app.use(
       secure: false,
       maxAge: 24 * 60 * 60 * 1000,
     },
+    store: sessionStore
   })
 );
 
 import authRoute from "./routes/authRoute";
 import indexRoute from "./routes/indexRoute";
+import adminRoute from "./routes/adminRoute";
+import {getUserIdBySessionId, revokeUserSession} from "./controllers/userController";
 
 // Middleware for express
 app.use(express.json());
@@ -48,6 +51,21 @@ app.use((req, res, next) => {
 
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
+app.use("/admin", adminRoute);
+
+app.post('/admin/revoke/:sid', (req, res) => {
+  const sid = req.params.sid;
+  sessionStore.destroy(sid, (err) => {
+    if (err) {
+      console.log('err', err);
+    }
+    const activeUserId = getUserIdBySessionId(sid);
+    if (activeUserId) {
+      revokeUserSession(activeUserId);
+    }
+    res.redirect('/admin');
+  });
+});
 
 app.listen(port, () => {
   console.log(`🚀 Server has started on port ${port}`);

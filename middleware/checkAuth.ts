@@ -13,3 +13,10 @@ export const forwardAuthenticated = (req: Request, res: Response, next: NextFunc
     }
     res.redirect("/dashboard");
 }
+
+export const ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (req.isAuthenticated() && req.user?.role === 'admin') {
+    return next();
+  }
+  res.redirect("/auth/login");
+}

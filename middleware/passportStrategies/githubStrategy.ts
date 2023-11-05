@@ -1,6 +1,6 @@
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
-import {createGithubUser, getUserById, getUserByIdSafe} from "../../controllers/userController";
+import { createGithubUser, getUserByIdSafe } from "../../controllers/userController";
 require('dotenv').config();
 
 

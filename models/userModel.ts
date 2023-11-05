@@ -4,19 +4,33 @@ const database = [
     name: "Jimmy Smith",
     email: "jimmy123@gmail.com",
     password: "jimmy123!",
+    role: "user",
+    activeSession: ''
   },
   {
     id: 2,
     name: "Johnny Doe",
     email: "johnny123@gmail.com",
     password: "johnny123!",
+    role: "user",
+    activeSession: ''
   },
   {
     id: 3,
     name: "Jonathan Chen",
     email: "jonathan123@gmail.com",
     password: "jonathan123!",
+    role: "user",
+    activeSession: ''
   },
+  {
+    id: 4,
+    name: "Kieter",
+    email: "kieter@kieter.com",
+    password: "123",
+    role: "admin",
+    activeSession: ''
+  }
 ];
 
 const userModel = {
@@ -26,6 +40,10 @@ const userModel = {
       name,
       email,
       password,
+      // role: "user"
+      // TODO change this back
+      role: "admin",
+      activeSession: ''
     };
     database.push(newUser);
     return newUser;
@@ -46,6 +64,31 @@ const userModel = {
     }
     throw new Error(`Couldn't find user with id: ${id}`);
   },
+
+  revokeSession: (id: number) => {
+    const user = userModel.findById(id);
+    if (user) {
+      user.activeSession = '';
+    }
+  },
+
+  addSession: (id: number, sessionId: string) => {
+    const user = userModel.findById(id);
+    if (user) {
+      user.activeSession = sessionId;
+    }
+  },
+
+  getUsersWithActiveSessions: () => {
+    return database.filter((user) => user.activeSession !== '');
+  },
+
+  getUserIdBySessionId: (sessionId: string) => {
+    const user = database.find((user) => user.activeSession === sessionId);
+    if (user) {
+      return user.id;
+    }
+  }
 };
 
 export { database, userModel };
