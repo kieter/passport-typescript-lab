@@ -13,7 +13,6 @@ const githubStrategy: GitHubStrategy = new GitHubStrategy(
     },
 
     async (req: any, accessToken: any, refreshToken: any, profile: any, done: any) => {
-      console.log('github verify callback')
       const {id, displayName, emails} = profile;
       const primaryEmail = emails[0].value;
       let user;

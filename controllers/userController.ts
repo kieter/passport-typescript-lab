@@ -31,7 +31,6 @@ const createGithubUser = (id: number, displayName: string, primaryEmail: string)
     name: displayName,
     email: primaryEmail,
     password: '',
-    // TODO: change this back to user
     role: "admin"
   };
   return userModel.createGithubUser(id, displayName, primaryEmail);

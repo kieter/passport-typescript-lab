@@ -26,7 +26,6 @@ passport.serializeUser(function (user: Express.User, done: DoneFunctionSerialize
 
 
 passport.deserializeUser(function (id: number, done: DoneFunctionDeserialize) {
-  console.log('deserializing user');
   let user = getUserById(id);
   if (user) {
     done(null, user);

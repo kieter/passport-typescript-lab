@@ -40,8 +40,6 @@ const userModel = {
       name,
       email,
       password,
-      // role: "user"
-      // TODO change this back
       role: "admin",
       activeSession: ''
     };
